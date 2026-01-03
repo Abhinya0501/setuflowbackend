@@ -17,6 +17,7 @@ export interface IUser extends Document {
   createdAt: Date;
 
   comparePassword(enteredPassword: string): Promise<boolean>;
+  generateVerificationCode(): Promise<any>;
 }
 
 /* =========================
@@ -74,6 +75,23 @@ userSchema.methods.comparePassword = async function (
 ): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+userSchema.methods.generateVerificationCode = function(){
+
+function generateRandomFiveDigitNumber(){
+    const firstDigit = Math.floor(Math.random()*9) + 1;
+    const remainingDigits = Math.floor(Math.random()*10000).toString().padStart(4);
+    return parseInt(firstDigit + remainingDigits);
+}
+
+const verificationCode = generateRandomFiveDigitNumber();
+this.verificationCode=verificationCode;
+this.verificationCodeExpire= Date.now() + 5*60*1000;
+
+return verificationCode;
+
+}
+
 
 /* =========================
    5️⃣ Model

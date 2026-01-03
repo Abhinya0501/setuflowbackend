@@ -70,11 +70,12 @@ sendVerificationCode(
     verificationCode,
     name,
     email,
-    phone,
-    res
-)
-
-
+    phone
+    
+);
+res.status(200).json({
+    success:true,
+})
 
         }catch(error){
             next(error);
